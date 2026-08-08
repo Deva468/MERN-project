@@ -45,7 +45,7 @@ function ViewTickets() {
 
   return (
     <div className="container">
-      <h2>All Tickets</h2>
+      <h2>Support Tickets</h2>
 
       {loading && <p>Loading tickets...</p>}
       {error && <p>{error}</p>}
