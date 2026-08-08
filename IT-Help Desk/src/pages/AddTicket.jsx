@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addTicket } from "../utils/ticketStore";
 
 function AddTicket() {
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [issue, setIssue] = useState("");
   const [priority, setPriority] = useState("Low");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,25 +20,18 @@ function AddTicket() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/tickets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ticket),
-      });
+      const result = await addTicket(ticket);
 
-      const data = await response.json();
-
-      alert(data.message);
+      alert(result.source === "backend" ? "Ticket Added" : "Ticket saved locally");
 
       setName("");
       setDepartment("");
       setIssue("");
       setPriority("Low");
+      navigate("/tickets");
     } catch (error) {
-      console.log(error);
-      alert("Something went wrong");
+      console.error(error);
+      alert(error.message || "Something went wrong");
     }
   }
 
